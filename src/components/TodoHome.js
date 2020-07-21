@@ -30,6 +30,7 @@ const TodoHome = () => {
 
   useEffect(() => {
     getTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getTodos = async () => {
@@ -166,6 +167,7 @@ const TodoHome = () => {
           <>
             {todos.map(({ _id, title, description }) => (
               <div
+                key={_id}
                 className='mb-1'
                 onClick={() => {
                   setCurrentTodo(_id);

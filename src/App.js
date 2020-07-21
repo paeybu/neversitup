@@ -5,7 +5,7 @@ import TodoHome from './components/TodoHome';
 import AuthContext from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 const token = localStorage.getItem('token');
 
