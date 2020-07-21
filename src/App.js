@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import './App.css';
 import Login from './components/Login';
+import TodoHome from './components/TodoHome';
+import AuthContext from './context/AuthContext';
+
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+const token = localStorage.getItem('token');
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <div style={{ paddingTop: '100px' }}>
-          <Route exact path='/' component={Login}></Route>
-        </div>
-      </Switch>
-    </Router>
+    <AuthContext.Provider value={token}>
+      <Router>
+        <Switch>
+          <Route exact path='/' component={token ? TodoHome : Login}></Route>
+        </Switch>
+      </Router>
+    </AuthContext.Provider>
   );
 }
 
