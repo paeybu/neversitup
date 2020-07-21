@@ -1,6 +1,6 @@
-import React from 'react';
-import { Form, Input, Button, Checkbox, Row, Col } from 'antd';
-
+import React, { useEffect } from 'react';
+import { Form, Input, Button, Row, Col } from 'antd';
+import axios from 'axios';
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 20 },
@@ -10,8 +10,19 @@ const tailLayout = {
 };
 
 const Login = () => {
-  const onFinish = (values) => {
-    console.log('Success:', values);
+  const onFinish = async (values) => {
+    try {
+      const res = await axios.post(
+        'https://candidate.neversitup.com/todo/users/auth',
+        values
+      );
+      if (res) {
+        const { token } = res.data;
+        localStorage.setItem('token', token);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -42,10 +53,6 @@ const Login = () => {
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
             <Input.Password />
-          </Form.Item>
-
-          <Form.Item {...tailLayout} name='remember' valuePropName='checked'>
-            <Checkbox>Remember me</Checkbox>
           </Form.Item>
 
           <Form.Item {...tailLayout}>
