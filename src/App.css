@@ -1,1 +1,17 @@
 @import '~antd/dist/antd.css';
+
+.pt-2 {
+  padding-top: 2em;
+}
+
+.ml-1 {
+  margin-left: 1em;
+}
+
+.mt-1 {
+  margin-top: 1em;
+}
+
+.mb-1 {
+  margin-bottom: 1em;
+}

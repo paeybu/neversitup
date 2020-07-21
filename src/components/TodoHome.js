@@ -2,6 +2,16 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Button, Modal, Form, Input, Card } from 'antd';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
+import styled from 'styled-components';
+
+const CardWrapper = styled.div`
+  padding-top: 20px;
+`;
+
+const Content = styled.div`
+  width: 1400px;
+  margin: 50px auto;
+`;
 
 const TodoHome = () => {
   const token = useContext(AuthContext);
@@ -36,11 +46,11 @@ const TodoHome = () => {
       footer={null}
       onCancel={() => setShowCreateModal(false)}
     >
-      <div style={{ paddingTop: '20px' }}>
+      <CardWrapper>
         <Form
           onFinish={async (values) => {
             try {
-              const res = await axios.post(
+              await axios.post(
                 'https://candidate.neversitup.com/todo/todos',
                 values,
                 config
@@ -77,7 +87,7 @@ const TodoHome = () => {
             </Button>
           </Form.Item>
         </Form>
-      </div>
+      </CardWrapper>
     </Modal>
   );
   const EditModal = () => (
@@ -86,15 +96,14 @@ const TodoHome = () => {
       footer={null}
       onCancel={() => setShowEditModal(false)}
     >
-      <div style={{ paddingTop: '20px' }}>
+      <div className='pt-2'>
         <Form
           form={form}
           initialValues={todos.filter((todo) => todo._id === currentTodo)[0]}
           onFinish={async (values) => {
             try {
               const url = `https://candidate.neversitup.com/todo/todos/${currentTodo}`;
-              console.log(url);
-              const res = await axios.put(url, values, config);
+              await axios.put(url, values, config);
               setShowEditModal(false);
               getTodos();
             } catch (error) {
@@ -127,11 +136,10 @@ const TodoHome = () => {
             </Button>
             <Button
               type='danger'
-              style={{ marginLeft: '20px' }}
+              className='ml-1'
               onClick={async () => {
                 const url = `https://candidate.neversitup.com/todo/todos/${currentTodo}`;
-                const res = await axios.delete(url, config);
-                console.log(res);
+                await axios.delete(url, config);
                 setShowEditModal(false);
                 getTodos();
               }}
@@ -146,7 +154,7 @@ const TodoHome = () => {
 
   return (
     <>
-      <div style={{ width: '1400px', margin: '50px auto' }}>
+      <Content>
         {todos.length === 0 ? (
           <>
             <p>You have no todos. Press 'Create' to add new todo</p>
@@ -158,7 +166,7 @@ const TodoHome = () => {
           <>
             {todos.map(({ _id, title, description }) => (
               <div
-                style={{ marginBottom: '10px' }}
+                className='mb-1'
                 onClick={() => {
                   setCurrentTodo(_id);
                   setShowEditModal(true);
@@ -169,7 +177,7 @@ const TodoHome = () => {
               </div>
             ))}
             <Button
-              style={{ marginTop: '20px' }}
+              className='mt-1'
               onClick={() => setShowCreateModal(true)}
               type='primary'
             >
@@ -177,7 +185,7 @@ const TodoHome = () => {
             </Button>
           </>
         )}
-      </div>
+      </Content>
       <CreateModal />
       <EditModal />
     </>
