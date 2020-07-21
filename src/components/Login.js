@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import { Form, Input, Button, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
+import { Form, Input, Button, Row, Col, message } from 'antd';
 import axios from 'axios';
 const layout = {
   labelCol: { span: 4 },
@@ -10,6 +11,7 @@ const tailLayout = {
 };
 
 const Login = () => {
+  const [isLogin, setIsLogin] = useState(localStorage.getItem('token'));
   const onFinish = async (values) => {
     try {
       const res = await axios.post(
@@ -19,9 +21,11 @@ const Login = () => {
       if (res) {
         const { token } = res.data;
         localStorage.setItem('token', token);
+        message.success('Logged in');
+        setIsLogin(true);
       }
     } catch (error) {
-      console.log(error);
+      message.error('Wrong credential');
     }
   };
 
@@ -29,8 +33,10 @@ const Login = () => {
     console.log('Failed:', errorInfo);
   };
 
-  return (
-    <Row justify='center'>
+  return isLogin ? (
+    <Redirect to='/' />
+  ) : (
+    <Row justify='center' style={{ marginTop: '50px' }}>
       <Col span={12}>
         <Form
           {...layout}

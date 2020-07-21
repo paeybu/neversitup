@@ -11,7 +11,9 @@ const TodoHome = () => {
   const [currentTodo, setCurrentTodo] = useState({});
 
   const config = {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${token || localStorage.getItem('token')}`,
+    },
   };
 
   const [form] = Form.useForm();
@@ -148,12 +150,15 @@ const TodoHome = () => {
         {todos.length === 0 ? (
           <>
             <p>You have no todos. Press 'Create' to add new todo</p>
-            <Button onClick={() => setShowCreateModal(true)}>Create</Button>
+            <Button type='primary' onClick={() => setShowCreateModal(true)}>
+              Create
+            </Button>
           </>
         ) : (
           <>
             {todos.map(({ _id, title, description }) => (
               <div
+                style={{ marginBottom: '10px' }}
                 onClick={() => {
                   setCurrentTodo(_id);
                   setShowEditModal(true);
@@ -166,6 +171,7 @@ const TodoHome = () => {
             <Button
               style={{ marginTop: '20px' }}
               onClick={() => setShowCreateModal(true)}
+              type='primary'
             >
               Create
             </Button>
